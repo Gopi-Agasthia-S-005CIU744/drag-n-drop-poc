@@ -1,6 +1,7 @@
 import { TreeNode } from '@carbon/react';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities'
+import React from 'react';
 
 interface WrapperProps {
     id: string;
