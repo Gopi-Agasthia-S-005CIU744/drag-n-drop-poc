@@ -1,4 +1,6 @@
-import {useDraggable, useDroppable} from '@dnd-kit/core';
+import { TreeNode } from '@carbon/react';
+import { useDraggable, useDroppable } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities'
 
 interface WrapperProps {
     id: string;
@@ -6,29 +8,27 @@ interface WrapperProps {
     children: React.ReactNode;
 }
 
-export function Wrapper ({ id, isDirectory, children }: WrapperProps) {
-    const {attributes, listeners, setNodeRef: DraggableRef} = useDraggable({
-        id: id,
+export function Wrapper ({ id, isDirectory }: WrapperProps) {
+    const {attributes, listeners, setNodeRef: DraggableRef, transform} = useDraggable({
+        id: `${id}-drag`,
     });
     const { setNodeRef: DroppableRef } = useDroppable({
-        id: id,
+        id: `${id}-drop`,
     });
 
-    const getContent = () => {
-        if (isDirectory) {
-            return children;
-        } else {
-            return (
-                <div ref={DraggableRef} {...listeners} {...attributes}>
-                    {children}
-                </div>
-            )
-        }
+    const style = {
+        // Outputs `translate3d(x, y, 0)`
+        transform: CSS.Translate.toString(transform),
+    };
+
+    if (isDirectory) {
+        return (
+            <TreeNode ref={DroppableRef} key={id} label={id} />
+        );
+    } else {
+        return (
+            <TreeNode ref={DraggableRef} {...listeners} {...attributes} style={style} key={id} label={id} />
+        )
     }
 
-    return (
-        <div ref={DroppableRef}>
-            {getContent()}
-        </div>
-    );
 }

@@ -1,4 +1,4 @@
-import { TreeNode, TreeView } from '@carbon/react';
+import { TreeView } from '@carbon/react';
 import { DndContext, DragEndEvent, DragStartEvent, PointerSensor, useSensor } from '@dnd-kit/core';
 import { restrictToParentElement, restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { useState } from 'react';
@@ -54,14 +54,9 @@ function App() {
             >
                 <TreeView label={'Tree'}>
                     {nodes.map((node) => (
-                        <TreeNode
-                            key={node.value}
-                            label={
-                                <Wrapper id={node.value} isDirectory={node.isDir}>
-                                    {node.value}
-                                </Wrapper>
-                            }
-                        />
+                        <Wrapper id={node.value} key={node.value} isDirectory={node.isDir}>
+                            {node.value}
+                        </Wrapper>
                     ))}
                 </TreeView>
             </DndContext>
