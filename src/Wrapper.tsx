@@ -24,11 +24,24 @@ export function Wrapper ({ id, isDirectory }: WrapperProps) {
 
     if (isDirectory) {
         return (
-            <TreeNode ref={DroppableRef} key={id} label={id} />
+            <TreeNode
+                ref={DroppableRef}
+                key={id}
+                label={id}
+                // selected={[]}  //When this line is uncommented the code works fine
+            />
         );
     } else {
         return (
-            <TreeNode ref={DraggableRef} {...listeners} {...attributes} style={style} key={id} label={id} />
+            <TreeNode
+                ref={DraggableRef}
+                {...listeners}
+                {...attributes}
+                style={style}
+                key={id}
+                label={id}
+                // selected={[]}  //When this line is uncommented the code works fine
+            />
         )
     }
 
