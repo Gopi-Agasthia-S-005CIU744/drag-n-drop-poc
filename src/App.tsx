@@ -3,19 +3,23 @@ import { DndContext, DragEndEvent, DragStartEvent, PointerSensor, useSensor } fr
 import { restrictToParentElement, restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { useState } from 'react';
 import { Wrapper } from './Wrapper';
+import React from 'react';
 
 interface Node {
     value: string;
     isDir: boolean;
+    childNodes?: Node[];
 }
 function App() {
     const nodes: Node[] = [
-        {value: 'Folder 1', isDir: true},
-        {value: 'Folder 2', isDir: true},
-        {value: 'File 1', isDir: false},
-        {value: 'File 2', isDir: false},
-        {value: 'File 3', isDir: false},
-        {value: 'File 4', isDir: false},
+        {value: 'Root Folder', isDir: true, childNodes: [
+            {value: 'Folder 1', isDir: true},
+            {value: 'Folder 2', isDir: true},
+            {value: 'File 1', isDir: false},
+            {value: 'File 2', isDir: false},
+            {value: 'File 3', isDir: false},
+            {value: 'File 4', isDir: false},
+        ]}
     ]
 
     const [activeId, setActiveId] = useState<string | null>(null);
