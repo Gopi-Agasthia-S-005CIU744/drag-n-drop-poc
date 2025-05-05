@@ -7,9 +7,11 @@ interface WrapperProps {
     id: string;
     isDirectory: boolean;
     children: React.ReactNode;
+    active: string;
+    setActive: (name: string) => void;
 }
 
-export function Wrapper ({ id, isDirectory }: WrapperProps) {
+export function Wrapper ({ id, isDirectory, children, active, setActive }: WrapperProps) {
     const {attributes, listeners, setNodeRef: DraggableRef, transform} = useDraggable({
         id: `${id}-drag`,
     });
@@ -27,9 +29,15 @@ export function Wrapper ({ id, isDirectory }: WrapperProps) {
             <TreeNode
                 ref={DroppableRef}
                 key={id}
+                id={id}
                 label={id}
-                // selected={[]}  //When this line is uncommented the code works fine
-            />
+                isExpanded
+                selected={[active]}
+                active={active}
+                onSelect={() => setActive(id)}
+            >
+                {children}
+            </TreeNode>
         );
     } else {
         return (
@@ -38,9 +46,12 @@ export function Wrapper ({ id, isDirectory }: WrapperProps) {
                 {...listeners}
                 {...attributes}
                 style={style}
+                id={id}
                 key={id}
                 label={id}
-                // selected={[]}  //When this line is uncommented the code works fine
+                selected={[active]}
+                active={active}
+                onSelect={() => setActive(id)}
             />
         )
     }

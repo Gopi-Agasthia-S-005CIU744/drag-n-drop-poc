@@ -1,9 +1,8 @@
 import { TreeView } from '@carbon/react';
 import { DndContext, DragEndEvent, DragStartEvent, PointerSensor, useSensor } from '@dnd-kit/core';
 import { restrictToParentElement, restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Wrapper } from './Wrapper';
-import React from 'react';
 
 interface Node {
     value: string;
@@ -11,16 +10,20 @@ interface Node {
     childNodes?: Node[];
 }
 function App() {
-    const nodes: Node[] = [
-        {value: 'Root Folder', isDir: true, childNodes: [
+    const rootNode: Node = {
+        value: 'Root Folder',
+        isDir: true,
+        childNodes: [
             {value: 'Folder 1', isDir: true},
             {value: 'Folder 2', isDir: true},
             {value: 'File 1', isDir: false},
             {value: 'File 2', isDir: false},
             {value: 'File 3', isDir: false},
             {value: 'File 4', isDir: false},
-        ]}
-    ]
+        ]
+    }
+    
+    const [activeNode, setActiveNode] = useState<string>('');
 
     const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -56,12 +59,14 @@ function App() {
                 onDragCancel={handleDragCancel}
                 onDragEnd={handleDragEnd}
             >
-                <TreeView label={'Tree'}>
-                    {nodes.map((node) => (
-                        <Wrapper id={node.value} key={node.value} isDirectory={node.isDir}>
-                            {node.value}
+                <TreeView key={activeNode} label={'Tree'} active={activeNode} selected={[activeNode]}>
+                        <Wrapper id={rootNode.value} key={rootNode.value} isDirectory={rootNode.isDir} active={activeNode} setActive={setActiveNode}>
+                            {rootNode.childNodes && rootNode.childNodes.map(cNode => (
+                                <Wrapper id={cNode.value} key={cNode.value} isDirectory={cNode.isDir} active={activeNode} setActive={setActiveNode}>
+                                    {cNode.value}
+                                </Wrapper>
+                            ))}
                         </Wrapper>
-                    ))}
                 </TreeView>
             </DndContext>
         </>
